@@ -53,11 +53,12 @@ def send_mail(files, mail):
 # поиск неотправленных файлов
 # возвращается List названий файлов
 # все отправленные файлы записываются в логер
-def find_no_send_file(company_name):
+def find_no_send_files(company_name):
 
     d = datetime.now()
     data_year = d.strftime("%Y")
     data_mounth = d.strftime("%m")
+    no_send_fullname_files = []
 
     # папка
     dir = dir_doc
@@ -94,9 +95,8 @@ def find_no_send_file(company_name):
     # находим неотправленные файлы
     result = list(set(list_files) ^ set(list_log))
     result.sort()
-    no_send_fullname_file = []
     for line in result:
-        no_send_fullname_file.append(dir_final + "\\" + line)
+        no_send_fullname_files.append(dir_final + "\\" + line)
 
     # дозаписываем логгер
     f = open(file_name, 'a+')
@@ -104,10 +104,10 @@ def find_no_send_file(company_name):
         f.write(index + '\n')
     f.close()
 
-    return no_send_fullname_file
+    return no_send_fullname_files
 
 for element in company:
-    files = find_no_send_file(element)
+    files = find_no_send_files(element)
     if element == "":
         send_mail(files, "")
     if element == "":
